@@ -31,8 +31,6 @@ const GOOGLESEC =
 // console.log(process.env.API_URL);
 // console.log(process.env);
 
-GOOGLESEC;
-
 const Auth = () => {
   const classes = useStyles();
 

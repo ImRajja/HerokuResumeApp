@@ -13,7 +13,7 @@ function App() {
 
   const [user, setUser] = useState(JSON.parse(localStorage.getItem("profile")));
   // const [noHeader, setNoHeader] = useState(false);
-
+  setUser({ user: JSON.parse(localStorage.getItem("profile")) });
   return (
     <BrowserRouter>
       <Header user={user} setUser={setUser} />

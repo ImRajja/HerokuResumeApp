@@ -4,7 +4,7 @@ import { Link, useNavigate, useLocation } from "react-router-dom";
 import decode from "jwt-decode";
 import useStyles from "./styles";
 
-const Header = ({ user, setUser, noHeader }) => {
+const Header = ({ user, setUser }) => {
   const history = useNavigate();
   const location = useLocation();
 
@@ -26,7 +26,8 @@ const Header = ({ user, setUser, noHeader }) => {
       }
     }
     setUser(newUser);
-  }, [location]);
+    // }, [location]);
+  }, []);
 
   return (
     <Grid container="xs" alignItems="center">

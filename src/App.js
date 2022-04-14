@@ -13,7 +13,13 @@ function App() {
 
   const [user, setUser] = useState(JSON.parse(localStorage.getItem("profile")));
   // const [noHeader, setNoHeader] = useState(false);
-  setUser({ user: JSON.parse(localStorage.getItem("profile")) });
+  // setUser({ user: JSON.parse(localStorage.getItem("profile")) });
+  // setUser({ user: JSON.parse(localStorage.getItem("profile")) });
+
+  React.useEffect(() => {
+    setUser({ user: JSON.parse(localStorage.getItem("profile")) });
+  }, [user]);
+
   return (
     <BrowserRouter>
       <Header user={user} setUser={setUser} />

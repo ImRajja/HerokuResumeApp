@@ -23,11 +23,15 @@ const initialState = {
   confirmPassword: "",
 };
 
-const GOOGLESEC = process.env.GOOGLESEC;
-console.log(process.env.GOOGLESEC);
-console.log("API_URL");
-console.log(process.env.API_URL);
-console.log(process.env);
+// const GOOGLESEC = process.env.GOOGLESEC;
+const GOOGLESEC =
+  "123884862002-7l28p32pt31v7rnv78vbsghlslihj0e2.apps.googleusercontent.com";
+// console.log(process.env.GOOGLESEC);
+// console.log("API_URL");
+// console.log(process.env.API_URL);
+// console.log(process.env);
+
+GOOGLESEC;
 
 const Auth = () => {
   const classes = useStyles();

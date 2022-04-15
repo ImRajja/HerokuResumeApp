@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { Typography, TextField, Button, Grid } from "@material-ui/core";
 
-export function Upload({ addItem }) {
+export function Upload({ addItem, user }) {
   const [files, setFiles] = useState("");
 
   const handleChange = (e) => {
@@ -10,6 +10,7 @@ export function Upload({ addItem }) {
     fileReader.onload = (e) => {
       let jsonContent = JSON.parse(e.target.result);
       delete jsonContent["$schema"];
+      jsonContent.basics.image = user.result.imageUrl;
 
       // console.log("before", e.target.result);
       // console.log("after", JSON.stringify(jsonContent));
@@ -26,7 +27,7 @@ export function Upload({ addItem }) {
     //   return;
     // }
     // addItem({ resume: JSON.stringify(files[0]) });
-    addItem(files);
+    addItem(files, user);
   };
 
   return (

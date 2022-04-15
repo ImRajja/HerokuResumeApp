@@ -18,6 +18,7 @@ const Header = ({ user, setUser }) => {
 
   useEffect(() => {
     const newUser = JSON.parse(localStorage.getItem("profile"));
+
     const token = user?.token;
     if (token) {
       const decodedToken = decode(token);
@@ -26,8 +27,7 @@ const Header = ({ user, setUser }) => {
       }
     }
     setUser(newUser);
-    // }, [location]);
-  }, []);
+  }, [location]);
 
   return (
     <Grid container="xs" alignItems="center">
@@ -38,10 +38,10 @@ const Header = ({ user, setUser }) => {
           <Typography variant="h3">Resume Templates</Typography>
         </Grid>
       )}
-      <Grid item sm={3}>
+      <Grid item sm={11}>
         {user ? (
           <div>
-            {/* <Grid container justify="flex-end">
+            <Grid container justify="flex-end">
               <Grid item className={classes.userInfo}>
                 <Grid container>
                   <Grid item>
@@ -58,12 +58,27 @@ const Header = ({ user, setUser }) => {
                   </Grid>
                 </Grid>
               </Grid>
+              {/* <Grid item>
+                <Button
+                  color="primary"
+                  variant="contained"
+                  id="resume-button"
+                  onClick={() => window["generateResume"]}
+                >
+                  Download
+                </Button>
+              </Grid> */}
               <Grid item>
-                <Button color="primary" variant="contained" onClick={logout}>
+                <Button
+                  id="resume-button"
+                  color="primary"
+                  variant="contained"
+                  onClick={logout}
+                >
                   Logout
                 </Button>
               </Grid>
-            </Grid> */}
+            </Grid>
           </div>
         ) : (
           <Grid container justify="flex-end">

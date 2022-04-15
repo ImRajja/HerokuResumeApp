@@ -13,12 +13,8 @@ function App() {
 
   const [user, setUser] = useState(JSON.parse(localStorage.getItem("profile")));
   // const [noHeader, setNoHeader] = useState(false);
-  // setUser({ user: JSON.parse(localStorage.getItem("profile")) });
-  // setUser({ user: JSON.parse(localStorage.getItem("profile")) });
-
-  React.useEffect(() => {
-    setUser({ user: JSON.parse(localStorage.getItem("profile")) });
-  }, [user]);
+  console.log("newUser inside App");
+  console.log(user);
 
   return (
     <BrowserRouter>
@@ -28,7 +24,7 @@ function App() {
       {/* <Paper className={classes.paper}> */}
       <Routes>
         {user ? (
-          <Route path="/" exact element={<Home />} />
+          <Route path="/" exact element={<Home user={user} />} />
         ) : (
           <Route path="/" exact element={<NotSignedIn />} />
         )}

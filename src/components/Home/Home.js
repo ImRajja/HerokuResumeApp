@@ -9,30 +9,36 @@ import Templates from "../Templates/Templates";
 // import ejs from "ejs";
 // let ejs = require("ejs");
 
-const Home = () => {
+const Home = ({ user }) => {
+  console.log("user----inside hometop--st");
+  console.log(user.result.email);
+  console.log("user----inside hometop--end");
+
   const classes = useStyles();
 
   const [item, setItem] = useState([]);
 
-  const getItems = async () => {
-    const itemsFromServer = await fetchItems();
+  const getItems = async (user) => {
+    const itemsFromServer = await fetchItems(user);
     setItem(itemsFromServer.data);
   };
 
   useEffect(() => {
-    getItems();
+    getItems(user);
   }, []);
 
-  const addItem = async (item) => {
-    await createItem(item);
-    const itemsFromServer = await fetchItems();
+  const addItem = async (item, user) => {
+    console.log("user----inside home");
+    console.log(user);
+    await createItem(item, user);
+    const itemsFromServer = await fetchItems(user);
     setItem(itemsFromServer.data);
   };
 
   // let html = ejs.render("<%= basics.name; %>", { basics: item[0].basics });
 
   return (
-    <Container>
+    <Container className={classes.homeContainer} maxWidth={false}>
       {item.length > 0 ? (
         // <Resume resume={item[0]} />
         <Templates resume={item[0]} />
@@ -46,7 +52,7 @@ const Home = () => {
           <Grid item>
             <Typography variant="h5">
               This feels empty.
-              <Upload addItem={addItem} />
+              <Upload addItem={addItem} user={user} />
             </Typography>
           </Grid>
         </Grid>

@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { Typography, TextField, Button, Grid } from "@material-ui/core";
+import imageToBase64 from "image-to-base64/browser";
 
 export function Upload({ addItem, user }) {
   const [files, setFiles] = useState("");
@@ -10,7 +11,15 @@ export function Upload({ addItem, user }) {
     fileReader.onload = (e) => {
       let jsonContent = JSON.parse(e.target.result);
       delete jsonContent["$schema"];
-      jsonContent.basics.image = user.result.imageUrl;
+
+      imageToBase64(user.result.imageUrl) // Path to the image
+        .then((response) => {
+          // console.log(response); // "cGF0aC90by9maWxlLmpwZw=="
+          jsonContent.basics.image = `data:image/png;base64,${response}`;
+        })
+        .catch((error) => {
+          console.log(error); // Logs an error if there was one
+        });
 
       // console.log("before", e.target.result);
       // console.log("after", JSON.stringify(jsonContent));

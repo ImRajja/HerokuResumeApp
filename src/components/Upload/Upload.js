@@ -41,8 +41,6 @@ export function Upload({ addItem, user }) {
 
   return (
     <>
-      <h1>Upload your json resume</h1>
-
       <br />
       <>
         <form autoComplete="off" noValidate onSubmit={handleSubmit}>
@@ -64,7 +62,6 @@ export function Upload({ addItem, user }) {
           </Grid>
         </form>
       </>
-      {"uploaded file content -- " + files}
     </>
   );
 }

@@ -48,11 +48,37 @@ const Home = ({ user }) => {
           justify="center"
           alignItems="center"
           className={classes.noTodos}
+          style={{ backgroundColor: "white" }}
         >
           <Grid item>
             <Typography variant="h5">
-              This feels empty.
-              <Upload addItem={addItem} user={user} />
+              <ul>
+                <li>
+                  <h1>Export your json resume</h1>
+                </li>
+                <ol>
+                  <li>
+                    Install chrome extension{" "}
+                    <a
+                      href="https://chrome.google.com/webstore/detail/json-resume-exporter/caobgmmcpklomkcckaenhjlokpmfbdec"
+                      target="_blank"
+                    >
+                      JSON Resume Exporter
+                    </a>{" "}
+                  </li>
+                  <li>Login to LinkedIn</li>
+                  <li>Go to your profile</li>
+                  <li>Export json resume using installed chrome extension</li>
+
+                  <li>Import</li>
+                </ol>
+                <li>
+                  <h1>Import your json resume</h1>
+                </li>
+                <li>
+                  <Upload addItem={addItem} user={user} />
+                </li>
+              </ul>
             </Typography>
           </Grid>
         </Grid>

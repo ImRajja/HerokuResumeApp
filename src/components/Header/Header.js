@@ -60,7 +60,7 @@ const Header = ({ user, setUser }) => {
               </Grid>
               {/* <Grid item>
                 <Button
-                  color="primary"
+                  color="warning"
                   variant="contained"
                   id="resume-button"
                   onClick={() => window["generateResume"]}
@@ -71,7 +71,7 @@ const Header = ({ user, setUser }) => {
               <Grid item>
                 <Button
                   id="resume-button"
-                  color="primary"
+                  color="warning"
                   variant="contained"
                   onClick={logout}
                 >
@@ -87,7 +87,7 @@ const Header = ({ user, setUser }) => {
                 component={Link}
                 to="/auth"
                 variant="contained"
-                color="primary"
+                color="warning"
               >
                 Sign In
               </Button>

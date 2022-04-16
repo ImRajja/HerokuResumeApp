@@ -105,7 +105,7 @@ const Auth = () => {
 
   return (
     <Container component="main" maxWidth="xs" className={classes.main}>
-      <Typography variant="h5">{isSignup ? "Sign up" : "Sign in"}</Typography>
+      {/* <Typography variant="h5">{isSignup ? "Sign up" : "Sign in"}</Typography> */}
       <form className={classes.form} onSubmit={handleSubmit}>
         <Grid container spacing={2}>
           {/* {isSignup && (
@@ -147,7 +147,7 @@ const Auth = () => {
             />
           )} */}
         </Grid>
-        <Button
+        {/* <Button
           type="submit"
           fullWidth
           variant="contained"
@@ -155,7 +155,7 @@ const Auth = () => {
           className={classes.submit}
         >
           {isSignup ? "Sign up" : "Sign in"}
-        </Button>
+        </Button> */}
         <GoogleLogin
           clientId={GOOGLESEC}
           render={(renderProps) => (

@@ -25,7 +25,8 @@ const initialState = {
 
 // const GOOGLESEC = process.env.GOOGLESEC;
 const GOOGLESEC =
-  "123884862002-7l28p32pt31v7rnv78vbsghlslihj0e2.apps.googleusercontent.com";
+  "123884862002-0llaren8gmh8h8pdf27tkbns3pdp4ou3.apps.googleusercontent.com";
+// "123884862002-7l28p32pt31v7rnv78vbsghlslihj0e2.apps.googleusercontent.com";
 // console.log(process.env.GOOGLESEC);
 // console.log("API_URL");
 // console.log(process.env.API_URL);
@@ -107,7 +108,7 @@ const Auth = () => {
       <Typography variant="h5">{isSignup ? "Sign up" : "Sign in"}</Typography>
       <form className={classes.form} onSubmit={handleSubmit}>
         <Grid container spacing={2}>
-          {isSignup && (
+          {/* {isSignup && (
             <>
               <Input
                 name="firstName"
@@ -123,8 +124,8 @@ const Auth = () => {
                 half
               />
             </>
-          )}
-          <Input
+          )} */}
+          {/* <Input
             name="email"
             label="Email Address"
             handleChange={handleChange}
@@ -136,15 +137,15 @@ const Auth = () => {
             handleChange={handleChange}
             type={showPassword ? "text" : "password"}
             handleShowPassword={handleShowPassword}
-          />
-          {isSignup && (
+          /> */}
+          {/* {isSignup && (
             <Input
               name="confirmPassword"
               label="Repeat Password"
               handleChange={handleChange}
               type="password"
             />
-          )}
+          )} */}
         </Grid>
         <Button
           type="submit"
@@ -174,7 +175,7 @@ const Auth = () => {
           onFailure={googleFailure}
           cookiePolicy="single_host_origin"
         />
-        <Grid container justify="flex-end">
+        {/* <Grid container justify="flex-end">
           <Grid item>
             <Button onClick={switchMode}>
               {isSignup
@@ -182,7 +183,7 @@ const Auth = () => {
                 : "Don't have an account? Sign Up"}
             </Button>
           </Grid>
-        </Grid>
+        </Grid> */}
       </form>
     </Container>
   );

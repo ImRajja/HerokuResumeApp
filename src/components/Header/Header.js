@@ -31,17 +31,14 @@ const Header = ({ user, setUser }) => {
 
   return (
     <Grid container="xs" alignItems="center">
-      {user ? (
-        <></>
-      ) : (
-        <Grid item sm={9}>
-          <Typography variant="h3">Resume Templates</Typography>
-        </Grid>
-      )}
+
       <Grid item sm={11}>
         {user ? (
           <div>
             <Grid container justify="flex-end">
+              <Grid item sm={9}>
+                <Typography variant="h4">Mak A Diff - Resume</Typography>
+              </Grid>
               <Grid item className={classes.userInfo}>
                 <Grid container>
                   <Grid item>
@@ -59,19 +56,14 @@ const Header = ({ user, setUser }) => {
                 </Grid>
               </Grid>
               {/* <Grid item>
-                <Button
-                  color="warning"
-                  variant="contained"
-                  id="resume-button"
-                  onClick={() => window["generateResume"]}
-                >
+                <Button color="warning" variant="contained" id="resume-button">
                   Download
                 </Button>
               </Grid> */}
               <Grid item>
                 <Button
                   id="resume-button"
-                  color="warning"
+                  color="info"
                   variant="contained"
                   onClick={logout}
                 >
@@ -81,18 +73,19 @@ const Header = ({ user, setUser }) => {
             </Grid>
           </div>
         ) : (
-          <Grid container justify="flex-end">
-            <Grid item>
-              <Button
-                component={Link}
-                to="/auth"
-                variant="contained"
-                color="warning"
-              >
-                Sign In
-              </Button>
-            </Grid>
-          </Grid>
+          <></>
+          // <Grid container justify="flex-end">
+          //   <Grid item>
+          //     <Button
+          //       component={Link}
+          //       to="/auth"
+          //       variant="contained"
+          //       color="primary"
+          //     >
+          //       Sign In
+          //     </Button>
+          //   </Grid>
+          // </Grid>
         )}
       </Grid>
     </Grid>

@@ -1,12 +1,6 @@
 import React, { useState } from "react";
-import {
-  Button,
-  Typography,
-  Paper,
-  Avatar,
-  Grid,
-  Container,
-} from "@material-ui/core";
+import "./auth.css";
+import { Button, Typography, Grid, Container } from "@material-ui/core";
 import { GoogleLogin } from "react-google-login";
 import { useNavigate } from "react-router-dom";
 
@@ -104,46 +98,53 @@ const Auth = () => {
   };
 
   return (
-    <Container component="main" maxWidth="xs" className={classes.main}>
-      {/* <Typography variant="h5">{isSignup ? "Sign up" : "Sign in"}</Typography> */}
-      <form className={classes.form} onSubmit={handleSubmit}>
-        <Grid container spacing={2}>
-          {/* {isSignup && (
-            <>
-              <Input
-                name="firstName"
-                label="First Name"
-                handleChange={handleChange}
-                autoFocus
-                half
-              />
-              <Input
-                name="lastName"
-                label="Last Name"
-                handleChange={handleChange}
-                half
-              />
-            </>
-          )} */}
-          {/* <Input
-            name="email"
-            label="Email Address"
-            handleChange={handleChange}
-            type="email"
-          />
-          <Input
-            name="password"
-            label="Password"
-            handleChange={handleChange}
-            type={showPassword ? "text" : "password"}
-            handleShowPassword={handleShowPassword}
-          /> */}
-          {/* {isSignup && (
-            <Input
-              name="confirmPassword"
-              label="Repeat Password"
-              handleChange={handleChange}
-              type="password"
+    // <Container component="main" maxWidth="xs" className={classes.main}>
+    <>
+      <Container
+        component="main"
+        // maxWidth="xs"
+        className={classes.main}
+        spacing={2}
+      >
+        <Grid container spacing={2} justify="flex-start">
+          {/* <Grid xs={8}> */}
+          {/* <div className="homeImage">
+            <img src="./homeResume1.png" />
+          </div> */}
+          {/* </Grid> */}
+          <Grid item sm={6}></Grid>
+          <Grid
+            container
+            sm={6}
+            justifyContent="center"
+            alignItems="center"
+            direction="column"
+          >
+            <Typography variant="h1" align={"center"} m-b={5}>
+              Make beautiful resumes in few clicks
+            </Typography>
+            {/* </Grid>
+          <Grid item xs={3}> */}
+            <GoogleLogin
+              // clientId='320266898555-a52r99l7def1ropf21rk7ahuvt297hke.apps.googleusercontent.com'
+              clientId="123884862002-7l28p32pt31v7rnv78vbsghlslihj0e2.apps.googleusercontent.com"
+              render={(renderProps) => (
+                <Button
+                  className={classes.googleButton}
+                  color="primary"
+                  // fullWidth
+                  onClick={renderProps.onClick}
+                  disabled={renderProps.disabled}
+                  startIcon={<Icon />}
+                  variant="contained"
+                  size="large"
+                >
+                  Sign in with Google
+                </Button>
+              )}
+              onSuccess={googleSuccess}
+              onFailure={googleFailure}
+              cookiePolicy="single_host_origin"
             />
           )} */}
         </Grid>

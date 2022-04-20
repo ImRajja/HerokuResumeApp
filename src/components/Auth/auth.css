@@ -1,0 +1,10 @@
+div.homeImage {
+  position: absolute;
+  margin-left: -250px; /* very important for the image to be centered */
+  left: 30%;
+  bottom: 0px;
+}
+
+div.homeImage > img {
+  max-width: 430px;
+}

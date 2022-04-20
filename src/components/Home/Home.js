@@ -2,7 +2,12 @@ import React, { useState, useEffect } from "react";
 import { Container, Grid, Typography } from "@material-ui/core";
 
 import useStyles from "./styles";
-import { createItem, fetchItems } from "../../api/index";
+import {
+  fetchItems,
+  createItem,
+  updateItem,
+  deleteItem,
+} from "../../api/index";
 import { Upload } from "../Upload/Upload";
 import Resume from "../Resume/Resume";
 import Templates from "../Templates/Templates";
@@ -10,9 +15,7 @@ import Templates from "../Templates/Templates";
 // let ejs = require("ejs");
 
 const Home = ({ user }) => {
-  console.log("user----inside hometop--st");
-  console.log(user.result.email);
-  console.log("user----inside hometop--end");
+
 
   const classes = useStyles();
 
@@ -28,20 +31,33 @@ const Home = ({ user }) => {
   }, []);
 
   const addItem = async (item, user) => {
-    console.log("user----inside home");
-    console.log(user);
+
     await createItem(item, user);
     const itemsFromServer = await fetchItems(user);
     setItem(itemsFromServer.data);
   };
 
-  // let html = ejs.render("<%= basics.name; %>", { basics: item[0].basics });
+  const editItem = async (id, item, user) => {
+    await updateItem(id, item, user);
+    const itemsFromServer = await fetchItems(user);
+    setItem(itemsFromServer.data);
+  };
 
+  const removeItem = async (id, user) => {
+    await deleteItem(id, user);
+    const itemsFromServer = await fetchItems(user);
+    setItem(itemsFromServer.data);
+  };
   return (
     <Container className={classes.homeContainer} maxWidth={false}>
       {item.length > 0 ? (
         // <Resume resume={item[0]} />
-        <Templates resume={item[0]} />
+        <Templates
+          resumeIn={item[0]}
+          editItem={editItem}
+          user={user}
+          removeItem={removeItem}
+        />
       ) : (
         <Grid
           container
@@ -54,7 +70,7 @@ const Home = ({ user }) => {
             <Typography variant="h5">
               <ul>
                 <li>
-                  <h1>Export your json resume</h1>
+                  <h1>Export json resume from LinkedIn</h1>
                 </li>
                 <ol>
                   <li>

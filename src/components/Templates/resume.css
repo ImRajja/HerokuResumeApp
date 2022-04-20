@@ -3,7 +3,8 @@
 
 /* VARIABLES CSS */
 :root {
-  --header-height: 3rem;
+  /* --header-height: 3rem; */
+  --header-height: 0rem;
 
   /* Colors */
   --title-color: #0b0a0a;
@@ -196,7 +197,8 @@ body.scale-cv {
 }
 
 body {
-  margin: 0 0 var(--header-height) 0;
+  /* margin: 0 0 var(--header-height) 0; */
+  margin: 0 0 0 0;
   padding: 0;
   font-family: var(--body-font);
   font-size: var(--normal-font-size);
@@ -587,7 +589,8 @@ img {
 /* Classes modified for large screen size */
 @media screen and (min-width: 968px) {
   body {
-    margin: 3rem 0;
+    /* margin: 3rem 0; */
+    margin: 0 0;
   }
 
   .bd-container {
@@ -647,4 +650,8 @@ img {
     grid-template-columns: repeat(4, max-content);
     column-gap: 3.5rem;
   }
+}
+
+.section {
+  cursor: pointer;
 }

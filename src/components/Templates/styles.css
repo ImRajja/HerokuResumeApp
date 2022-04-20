@@ -69,3 +69,7 @@ li.borderless {
 .react-tabs__tab--selected {
   padding-left: 21px;
 }
+
+.panel-content {
+  /* text-align: center; */
+}

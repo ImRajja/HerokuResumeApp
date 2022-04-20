@@ -1,8 +1,11 @@
 import React from "react";
+function properText(text) {
+  return text ? text.replace(/\s+/g, "-").toLowerCase() : "";
+}
 
-export default function Leaf({ k, v }) {
+export default function Leaf({ k, v, h }) {
   return (
-    <li className="list-group-item borderless" key={k}>
+    <li className="list-group-item borderless" key={h - k}>
       <div className="keyvalue">
         <span className="key">{k}</span>
         <span className="value">{v}</span>

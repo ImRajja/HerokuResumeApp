@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { Typography, TextField, Button, Grid } from "@material-ui/core";
 import imageToBase64 from "image-to-base64/browser";
+import ShortUniqueId from "short-unique-id";
 
 export function Upload({ addItem, user }) {
   const [files, setFiles] = useState("");
@@ -12,30 +13,63 @@ export function Upload({ addItem, user }) {
       let jsonContent = JSON.parse(e.target.result);
       delete jsonContent["$schema"];
 
+      const uid = new ShortUniqueId({ length: 10 });
+
+      const newObj = {};
+      for (const key in jsonContent) {
+        if (Object.hasOwnProperty.call(jsonContent, key)) {
+          const element = jsonContent[key];
+          if (Array.isArray(element)) {
+            if (element.length) {
+              const arrayInside = [];
+              element.forEach((e) => {
+                const temp = {};
+                const tempUID = uid();
+                e["uid"] = tempUID;
+                temp[tempUID] = e;
+                arrayInside.push(temp);
+              });
+
+              newObj[key] = arrayInside;
+            } else {
+              newObj[key] = element;
+            }
+          } else {
+            newObj[key] = element;
+          }
+        }
+      }
+
       imageToBase64(user.result.imageUrl) // Path to the image
         .then((response) => {
-          // console.log(response); // "cGF0aC90by9maWxlLmpwZw=="
-          jsonContent.basics.image = `data:image/png;base64,${response}`;
+          newObj.basics.image = `data:image/png;base64,${response}`;
         })
         .catch((error) => {
           console.log(error); // Logs an error if there was one
         });
 
-      // console.log("before", e.target.result);
-      // console.log("after", JSON.stringify(jsonContent));
-      // setFiles(JSON.stringify(jsonContent));
-      setFiles(jsonContent);
+      newObj.basics.imageUrl = user.result.imageUrl;
+
+      const profiles = newObj.basics.profiles;
+
+      if (profiles.length > 0) {
+        const arrayInside = [];
+        profiles.forEach((e) => {
+          const temp = {};
+          e["uid"] = e.network;
+          temp[e.network] = e;
+          arrayInside.push(temp);
+        });
+
+        newObj.basics.profiles = arrayInside;
+      }
+
+      setFiles(newObj);
     };
   };
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    // if (!files[0]) {
-    //   alert("Upload your json resume");
-    //   alert(files);
-    //   return;
-    // }
-    // addItem({ resume: JSON.stringify(files[0]) });
     addItem(files, user);
   };
 
@@ -61,6 +95,9 @@ export function Upload({ addItem, user }) {
             </Grid>
           </Grid>
         </form>
+        {/* <Grid item xs={58}>
+          {JSON.stringify(files)}
+        </Grid> */}
       </>
     </>
   );

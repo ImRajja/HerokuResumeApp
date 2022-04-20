@@ -8,135 +8,843 @@ import Certificates from "./Certificates";
 import References from "./References";
 import Languages from "./Languages";
 import Skills from "./Skills";
-// import Form from "../Form/Form";
-// import rt-temp
+import DynamicForm from "../../DynamicForm";
+import {
+  IoMailOutline,
+  IoPhonePortraitOutline,
+  IoLocationOutline,
+} from "react-icons/io5";
+import imageToBase64 from "image-to-base64/browser";
+import { Button } from "@material-ui/core";
+import { useState, useEffect } from "react";
+import Profiles from "./Profiles";
 
-export default function Templates({ resume }) {
-  //   ImageDataURI.encodeFromURL(
-  //     "https://media-exp1.licdn.com/dms/image/C5603AQGvH7Aky_JBQw/profile-displayphoto-shrink_400_400/0/1595419258650?e=1655337600&v=beta&t=HX6eoX1Wh_OlidOMc7KfY6V6gO4DORfXTTlQhrLWLTY"
-  //   ).then((res) => console.log(res));
+export default function Templates({ resumeIn, editItem, user, removeItem }) {
+  const changeTextOnChange = (formikProps, fieldConfig, event) => {
+    console.log("event.target.value");
+    console.log(event.target.value);
+    console.log("event.target");
+    console.log(event.target);
+    console.log("formikProps inside change text");
+    console.log(formikProps);
 
-  //   function toDataUrl(url, callback) {
-  //     var xhr = new XMLHttpRequest();
-  //     xhr.onload = function () {
-  //       var reader = new FileReader();
-  //       reader.onloadend = function () {
-  //         callback(reader.result);
-  //       };
-  //       reader.readAsDataURL(xhr.response);
-  //     };
-  //     xhr.open("GET", url);
-  //     xhr.responseType = "blob";
-  //     xhr.send();
-  //   }
+    const customType = fieldConfig.customType;
+    const uid = formikProps.values.uid;
 
-  //   const imageData = toDataUrl(resume.basics.image, function (myBase64) {
-  //     console.log(myBase64); // myBase64 is the base64 string
-  //     return myBase64;
-  //   });
+    const tempData = resume[customType];
 
+    if (uid) {
+      tempData.forEach((element) => {
+        if (Object.keys(element)[0] === uid) {
+          element[uid] = formikProps.values;
+        }
+      });
+    } else {
+      console.log("fieldConfig.name");
+      console.log(fieldConfig.name);
+      console.log("event.target.value");
+      console.log(event.target.value);
+      if (fieldConfig.name === "location.address") {
+        tempData["location"]["address"] = event.target.value;
+      } else {
+        tempData[fieldConfig.name] = event.target.value;
+      }
+
+      if (fieldConfig.name === "imageUrl") {
+        console.log("event.target.value != resume.basics.imageUrl");
+        console.log(event.target.value);
+        console.log(resumeIn.basics.imageUrl);
+        // if (event.target.value != resumeIn.basics.imageUrl) {
+        // imageToBase64(event.target.value) // Path to the image
+        console.log(
+          "-----------------------------------///------------------------------------------"
+        );
+        imageToBase64(
+          event.target.value
+          // "https://media-exp1.licdn.com/dms/image/C5603AQH80bNVureXzg/profile-displayphoto-shrink_400_400/0/1639053867442?e=1655942400&v=beta&t=Z7O5OSJu2I3hMGC-_jJCQpGqVOkqoYhS6av6PA9xy3k"
+        ) // Path to the image
+          .then((response) => {
+            console.log("got response...");
+            tempData.image = `data:image/png;base64,${response}`;
+            // setResume((prev) => {
+            //   const outValue = { ...prev };
+            //   outValue[customType] = tempData;
+            //   return outValue;
+            // });
+          })
+          .catch((error) => {
+            console.log(error); // Logs an error if there was one
+          });
+        // }
+      }
+    }
+
+    console.log("tempData-----------============");
+    console.log(tempData);
+    console.log("schemaObject++++++");
+    console.log(schemaObject);
+
+    // formikProps.values;
+    // formikProps.values.uid;
+
+    setResume((prev) => {
+      const outValue = { ...prev };
+      outValue[customType] = tempData;
+      return outValue;
+
+      // return { ...prev, ({customType : tempData})  }
+    });
+  };
+
+  const btnIsSubmitting = (formikProps, fieldConfig, event) => {
+    // console.log("formikProps----////");
+    // console.log(formikProps);
+
+    // return formikProps.isValid && formikProps.dirty;
+    return true;
+  };
+
+  const schema = {
+    basics: {
+      id: "basics",
+      label: "Basics",
+      type: "container",
+      renderer: "form",
+      elements: {
+        name: {
+          name: "name",
+          label: "Name",
+          type: "field",
+          renderer: "text",
+          fieldType: "text",
+          validation: [["string"], ["required"], ["min", 3]],
+          onChange: changeTextOnChange,
+          customType: "basics",
+        },
+        imageUrl: {
+          name: "imageUrl",
+          label: "Image",
+          type: "field",
+          renderer: "text",
+          fieldType: "text",
+          validation: [["string"]],
+          onChange: changeTextOnChange,
+          customType: "basics",
+        },
+        label: {
+          name: "label",
+          label: "Label",
+          type: "field",
+          renderer: "text",
+          fieldType: "text",
+          validation: [["string"], ["required"], ["min", 3]],
+          onChange: changeTextOnChange,
+          customType: "basics",
+        },
+        email: {
+          name: "email",
+          label: "Email",
+          type: "field",
+          renderer: "text",
+          fieldType: "text",
+          validation: [["string"], ["required"], ["min", 3]],
+          onChange: changeTextOnChange,
+          customType: "basics",
+        },
+        phone: {
+          name: "phone",
+          label: "Phone",
+          type: "field",
+          renderer: "text",
+          fieldType: "text",
+          validation: [["string"], ["required"], ["min", 3]],
+          onChange: changeTextOnChange,
+          customType: "basics",
+        },
+        summary: {
+          name: "summary",
+          label: "Summary",
+          type: "field",
+          renderer: "textarea",
+          fieldType: "textArea",
+          validation: [["string"], ["required"], ["min", 10]],
+          onChange: changeTextOnChange,
+          customType: "basics",
+        },
+        location: {
+          type: "container",
+          renderer: "fieldset",
+          title: " Location",
+          collapsible: false,
+          cardClass: "card mb-3",
+          prefixNameToElement: true,
+          name: "location",
+          elements: {
+            address: {
+              name: "address",
+              label: "Address",
+              type: "field",
+              renderer: "text",
+              fieldType: "text",
+              validation: [["string"], ["min", 3]],
+              onChange: changeTextOnChange,
+              customType: "basics",
+            },
+          },
+        },
+        save: {
+          type: "field",
+          renderer: "button",
+          content: "Save",
+          fieldClass: "btn-success float-right mt-3",
+          buttonType: "submit",
+          customType: "basics",
+          // disabled: "{!(formik.isValid && formik.dirty)}",
+          // disabled: btnIsSubmitting,
+        },
+      },
+    },
+    profiles: {
+      id: "profiles",
+      label: "Profiles",
+      type: "container",
+      renderer: "form",
+      elements: {
+        network: {
+          name: "network",
+          label: "Network",
+          type: "field",
+          renderer: "text",
+          fieldType: "text",
+          validation: [["string"], ["required"], ["min", 3]],
+          onChange: changeTextOnChange,
+          customType: "profiles",
+        },
+        username: {
+          name: "username",
+          label: "Username",
+          type: "field",
+          renderer: "text",
+          fieldType: "text",
+          validation: [["string"], ["required"], ["min", 3]],
+          onChange: changeTextOnChange,
+          customType: "profiles",
+        },
+        url: {
+          name: "url",
+          label: "URL",
+          type: "field",
+          renderer: "text",
+          fieldType: "text",
+          validation: [["string"], ["required"], ["min", 3]],
+          onChange: changeTextOnChange,
+          customType: "profiles",
+        },
+        save: {
+          type: "field",
+          renderer: "button",
+          content: "Save",
+          fieldClass: "btn-success float-right mt-3",
+          buttonType: "submit",
+          customType: "profiles",
+          // disabled: btnIsSubmitting,
+        },
+      },
+    },
+    education: {
+      id: "education",
+      label: "Education",
+      type: "container",
+      renderer: "form",
+      elements: {
+        institution: {
+          name: "institution",
+          label: "Institution",
+          type: "field",
+          renderer: "text",
+          fieldType: "text",
+          validation: [["string"], ["required"], ["min", 3]],
+          onChange: changeTextOnChange,
+          customType: "education",
+        },
+        area: {
+          name: "area",
+          label: "Area",
+          type: "field",
+          renderer: "text",
+          fieldType: "text",
+          validation: [["string"], ["min", 2]],
+          onChange: changeTextOnChange,
+          customType: "education",
+        },
+        studyType: {
+          name: "studyType",
+          label: "Study Type",
+          type: "field",
+          renderer: "text",
+          fieldType: "text",
+          validation: [["string"], ["min", 2]],
+          onChange: changeTextOnChange,
+          customType: "education",
+        },
+        startDate: {
+          name: "startDate",
+          label: "Start Date",
+          type: "field",
+          renderer: "text",
+          fieldType: "text",
+          validation: [["string"], ["min", 2]],
+          onChange: changeTextOnChange,
+          customType: "education",
+        },
+        endDate: {
+          name: "endDate",
+          label: "End Date",
+          type: "field",
+          renderer: "text",
+          fieldType: "text",
+          validation: [["string"], ["min", 2]],
+          onChange: changeTextOnChange,
+          customType: "education",
+        },
+        score: {
+          name: "score",
+          label: "Score",
+          type: "field",
+          renderer: "text",
+          fieldType: "text",
+          validation: [["string"], ["min", 2]],
+          onChange: changeTextOnChange,
+          customType: "education",
+        },
+        save: {
+          type: "field",
+          renderer: "button",
+          content: "Save",
+          fieldClass: "btn-success float-right mt-3",
+          buttonType: "submit",
+          customType: "education",
+          // disabled: btnIsSubmitting,
+        },
+      },
+    },
+    languages: {
+      id: "languages",
+      label: "Languages",
+      type: "container",
+      renderer: "form",
+      elements: {
+        language: {
+          name: "language",
+          label: "language",
+          type: "field",
+          renderer: "text",
+          fieldType: "text",
+          validation: [["string"], ["required"], ["min", 3]],
+          onChange: changeTextOnChange,
+          customType: "languages",
+        },
+        fluency: {
+          name: "fluency",
+          label: "Fluency",
+          type: "field",
+          renderer: "text",
+          fieldType: "text",
+          validation: [["string"], ["min", 2]],
+          onChange: changeTextOnChange,
+          customType: "languages",
+        },
+        save: {
+          type: "field",
+          renderer: "button",
+          content: "Save",
+          fieldClass: "btn-success float-right mt-3",
+          buttonType: "submit",
+          customType: "languages",
+          // disabled: btnIsSubmitting,
+        },
+      },
+    },
+    work: {
+      id: "work",
+      label: "Work",
+      type: "container",
+      renderer: "form",
+      elements: {
+        name: {
+          name: "name",
+          label: "Org Name",
+          type: "field",
+          renderer: "text",
+          fieldType: "text",
+          validation: [["string"], ["required"], ["min", 3]],
+          onChange: changeTextOnChange,
+          customType: "work",
+        },
+        position: {
+          name: "position",
+          label: "Position",
+          type: "field",
+          renderer: "text",
+          fieldType: "text",
+          validation: [["string"], ["required"], ["min", 3]],
+          onChange: changeTextOnChange,
+          customType: "work",
+        },
+        startDate: {
+          name: "startDate",
+          label: "Start Date",
+          type: "field",
+          renderer: "text",
+          fieldType: "text",
+          validation: [["string"], ["min", 2]],
+          onChange: changeTextOnChange,
+          customType: "work",
+        },
+        endDate: {
+          name: "endDate",
+          label: "End Date",
+          type: "field",
+          renderer: "text",
+          fieldType: "text",
+          validation: [["string"], ["min", 2]],
+          onChange: changeTextOnChange,
+          customType: "work",
+        },
+        summary: {
+          name: "summary",
+          label: "Summary",
+          type: "field",
+          renderer: "textarea",
+          fieldType: "textArea",
+          validation: [["string"], ["required"], ["min", 10]],
+          onChange: changeTextOnChange,
+          customType: "work",
+        },
+        url: {
+          name: "url",
+          label: "URL",
+          type: "field",
+          renderer: "text",
+          fieldType: "text",
+          validation: [["string"], ["min", 8]],
+          onChange: changeTextOnChange,
+          customType: "work",
+        },
+        location: {
+          name: "location",
+          label: "Location",
+          type: "field",
+          renderer: "text",
+          fieldType: "text",
+          validation: [["string"], ["min", 2]],
+          onChange: changeTextOnChange,
+          customType: "work",
+        },
+        save: {
+          type: "field",
+          renderer: "button",
+          content: "Save",
+          fieldClass: "btn-success float-right mt-3",
+          buttonType: "submit",
+          customType: "work",
+        },
+      },
+    },
+    projects: {
+      id: "projects",
+      label: "Projects",
+      type: "container",
+      renderer: "form",
+      elements: {
+        name: {
+          name: "name",
+          label: "Project Name",
+          type: "field",
+          renderer: "text",
+          fieldType: "text",
+          validation: [["string"], ["required"], ["min", 3]],
+          onChange: changeTextOnChange,
+          customType: "projects",
+        },
+        startDate: {
+          name: "startDate",
+          label: "Start Date",
+          type: "field",
+          renderer: "text",
+          fieldType: "text",
+          validation: [["string"], ["min", 2]],
+          onChange: changeTextOnChange,
+          customType: "projects",
+        },
+        endDate: {
+          name: "endDate",
+          label: "End Date",
+          type: "field",
+          renderer: "text",
+          fieldType: "text",
+          validation: [["string"], ["min", 2]],
+          onChange: changeTextOnChange,
+          customType: "wprojectsrk",
+        },
+        summary: {
+          name: "summary",
+          label: "Summary",
+          type: "field",
+          renderer: "textarea",
+          fieldType: "textArea",
+          validation: [["string"], ["required"], ["min", 10]],
+          onChange: changeTextOnChange,
+          customType: "projects",
+        },
+        url: {
+          name: "url",
+          label: "URL",
+          type: "field",
+          renderer: "text",
+          fieldType: "text",
+          validation: [["string"], ["min", 8]],
+          onChange: changeTextOnChange,
+          customType: "projects",
+        },
+        save: {
+          type: "field",
+          renderer: "button",
+          content: "Save",
+          fieldClass: "btn-success float-right mt-3",
+          buttonType: "submit",
+          customType: "projects",
+        },
+      },
+    },
+    certificates: {
+      id: "certificates",
+      label: "Certificates",
+      type: "container",
+      renderer: "form",
+      elements: {
+        name: {
+          name: "name",
+          label: "Award Name",
+          type: "field",
+          renderer: "text",
+          fieldType: "text",
+          validation: [["string"], ["required"], ["min", 3]],
+          onChange: changeTextOnChange,
+          customType: "certificates",
+        },
+        position: {
+          name: "issuer",
+          label: "Issuer",
+          type: "field",
+          renderer: "text",
+          fieldType: "text",
+          validation: [["string"], ["required"], ["min", 3]],
+          onChange: changeTextOnChange,
+          customType: "certificates",
+        },
+        startDate: {
+          name: "startDate",
+          label: "Start Date",
+          type: "field",
+          renderer: "text",
+          fieldType: "text",
+          validation: [["string"], ["min", 2]],
+          onChange: changeTextOnChange,
+          customType: "certificates",
+        },
+        endDate: {
+          name: "endDate",
+          label: "End Date",
+          type: "field",
+          renderer: "text",
+          fieldType: "text",
+          validation: [["string"], ["min", 2]],
+          onChange: changeTextOnChange,
+          customType: "certificates",
+        },
+        url: {
+          name: "url",
+          label: "URL",
+          type: "field",
+          renderer: "text",
+          fieldType: "text",
+          validation: [["string"], ["min", 8]],
+          onChange: changeTextOnChange,
+          customType: "certificates",
+        },
+        save: {
+          type: "field",
+          renderer: "button",
+          content: "Save",
+          fieldClass: "btn-success float-right mt-3",
+          buttonType: "submit",
+          customType: "certificates",
+        },
+      },
+    },
+    references: {
+      id: "references",
+      label: "References",
+      type: "container",
+      renderer: "form",
+      elements: {
+        name: {
+          name: "name",
+          label: "Name",
+          type: "field",
+          renderer: "text",
+          fieldType: "text",
+          validation: [["string"], ["required"], ["min", 3]],
+          onChange: changeTextOnChange,
+          customType: "references",
+        },
+        reference: {
+          name: "reference",
+          label: "Reference",
+          type: "field",
+          renderer: "textarea",
+          fieldType: "textArea",
+          validation: [["string"], ["required"], ["min", 10]],
+          onChange: changeTextOnChange,
+          customType: "references",
+        },
+        save: {
+          type: "field",
+          renderer: "button",
+          content: "Save",
+          fieldClass: "btn-success float-right mt-3",
+          buttonType: "submit",
+          customType: "references",
+        },
+      },
+    },
+    skills: {
+      id: "skills",
+      label: "Skills",
+      type: "container",
+      renderer: "form",
+      elements: {
+        name: {
+          name: "name",
+          label: "Skill Name",
+          type: "field",
+          renderer: "text",
+          fieldType: "text",
+          validation: [["string"], ["required"], ["min", 1]],
+          onChange: changeTextOnChange,
+          customType: "skills",
+        },
+        level: {
+          name: "level",
+          label: "Level",
+          type: "field",
+          renderer: "text",
+          fieldType: "text",
+          validation: [["string"]],
+          onChange: changeTextOnChange,
+          customType: "skills",
+        },
+        save: {
+          type: "field",
+          renderer: "button",
+          content: "Save",
+          fieldClass: "btn-success float-right mt-3",
+          buttonType: "submit",
+          customType: "skills",
+        },
+      },
+    },
+  };
+  const [resume, setResume] = useState(resumeIn);
+
+  const save = (values, formikProps) => {
+    console.log("values----->");
+    console.log(values);
+    console.log(JSON.stringify(values));
+
+    const _id = resume._id;
+    const temp = resume;
+    delete resume["_id"];
+
+    editItem(_id, temp, user);
+    formikProps.setSubmitting(false);
+  };
+
+  function handleDeleteBtnClick() {
+    removeItem(resume._id, user);
+  }
+
+  const [schemaObject, setSchemaObject] = useState({
+    onSubmit: save.bind(this),
+    initialValues: {},
+    schema: {},
+  });
+
+  const handleSectionClick = (sectionName, iKey) => {
+    if (iKey) {
+      setSchemaObject((prev) => {
+        console.log("im now setting schema ooooooooooo----ooobject");
+        const outValue = { ...prev };
+
+        let elements = resume[`${sectionName}`];
+        if (sectionName === "profiles") {
+          elements = resume["basics"]["profiles"];
+        }
+
+        elements.forEach((element) => {
+          if (Object.keys(element)[0] === iKey) {
+            outValue["initialValues"] = element[Object.keys(element)[0]];
+          }
+        });
+
+        outValue["schema"] = schema[`${sectionName}`];
+        return outValue;
+      });
+    } else {
+      console.log(sectionName);
+
+      setSchemaObject((prev) => {
+        console.log("im now setting schema oooooooooo*****oooobject");
+        const outValue = { ...prev };
+        outValue["schema"] = schema[`${sectionName}`];
+        outValue["initialValues"] = resume[`${sectionName}`];
+        return outValue;
+      });
+    }
+  };
+
+  function handleBasicSectionClick(index) {
+    console.log(" inside handleBasicSectionClick");
+
+    handleSectionClick("basics");
+  }
   return (
     <>
-      {/* <Form /> */}
-      <main className="l-main bd-container">
-        {/* <!-- All elements within this div, is generated in PDF --> */}
-        <div className="resume" id="area-cv">
-          <div className="resume__left">
-            {/* <!-- HOME --> */}
-            <section className="home" id="home">
-              <div className="home_containter section bd-grid">
-                <div className="home_data bd-grid">
-                  <img
-                    // src={resume.basics.image}
-                    src={
-                      resume.imageData ? resume.imageData : resume.basics.image
-                    }
-                    alt=""
-                    className="home_img center"
-                  />
-                  <h1 className="home_title">{resume.basics.name}</h1>
-                  <h3 className="home_profession">{resume.basics.label}</h3>
-                  {/* <!-- Button to generate and download the pdf. Available for desktop. --> */}
-                  {/* <div>
-                    <a
-                      download=""
-                      href="assets/pdf/Muhammadessa-resume.pdf"
-                      className="home_button-movil"
-                    >
-                      Download
-                    </a>
-                  </div> */}
+      <div style={{ display: "flex" }}>
+        <div style={{ width: "420px" }}>
+          <Button
+            color="error"
+            variant="contained"
+            onClick={handleDeleteBtnClick}
+          >
+            Delete Resume
+          </Button>
+          <DynamicForm schemaObject={schemaObject} />
+        </div>
+        <main className="l-main bd-container">
+          {/* <!-- All elements within this div, is generated in PDF --> */}
+          <div className="resume" id="area-cv">
+            <div className="resume__left">
+              {/* <!-- HOME --> */}
+              <section
+                className="home"
+                id="home"
+                onClick={handleBasicSectionClick}
+              >
+                <div className="home_containter section bd-grid">
+                  <div className="home_data bd-grid">
+                    {resume.basics.image && (
+                      <img
+                        src={resume.basics.image}
+                        alt=""
+                        className="home_img center"
+                      />
+                    )}
+                    <h1 className="home_title">{resume.basics.name}</h1>
+                    <h3 className="home_profession">{resume.basics.label}</h3>
+                  </div>
+                  <div className="home_address bd-grid">
+                    {resume.basics.location.address && (
+                      <span className="home_information">
+                        <IoLocationOutline />
+                        <i className="bx bx-map"> &nbsp; </i>
+                        {resume.basics.location.address}
+                      </span>
+                    )}
+                    {resume.basics.email && (
+                      <span className="home_information">
+                        <IoMailOutline />
+                        <i className="bx bx-envelope"> &nbsp; </i>
+                        {resume.basics.email}
+                      </span>
+                    )}
+                    {resume.basics.phone && (
+                      <span className="home_information">
+                        <IoPhonePortraitOutline />
+                        <i className="bx bx-phone"> &nbsp; </i>
+                        {resume.basics.phone}
+                      </span>
+                    )}
+                  </div>
                 </div>
-                {/* <div className="home_address bd-grid">
-                  {resume.basics.location.address && (
-                    <span className="home_information">
-                      <i className="bx bx-map"> &nbsp; </i>
-                      {resume.basics.location.address}
-                    </span>
-                  )}
-                  {resume.basics.email && (
-                    <span className="home_information">
-                      <i className="bx bx-envelope"> &nbsp; </i>
-                      {resume.basics.email}
-                    </span>
-                  )}
-                  {resume.basics.phone && (
-                    <span className="home_information">
-                      <i className="bx bx-phone"> &nbsp; </i>
-                      {resume.basics.phone}
-                    </span>
-                  )}
-                </div> */}
-              </div>
-            </section>
-
-            {/* <!-- SOCIAL --> */}
-            {/* <section className="social section"> */}
-            {/* <h2 className="section-title">SOCIAL</h2>
-              <div className="social_container bd-grid"> */}
-            {/* <% resume.basics.profiles.forEach(function(profile) { %> */}
-            {/* <a href="<%= profile.url %> " target="_blank" className="social_link" > */}
-            {/* <i className="bx bxl-<%= profile.network.toLowerCase() %>-square social_icon"></i> */}
-            {/* @<%= profile.username %>  */}
-            {/* </a> */}
-
-            {/* <% }); %> */}
-            {/* </div> */}
-            {/* </section> */}
-            {/* <!-- PROFILE --> */}
-            {resume.basics.summary && (
-              <section className="profile section" id="profile">
-                <h2 className="section-title">Profile</h2>
-                <p className="profile_description">{resume.basics.summary}</p>
               </section>
-            )}
 
-            {/* <!-- EDUCATION --> */}
-            <div className="html2pdf__page-break"></div>
-            <Education education={resume.education} />
-            {/* <!-- LANGUAGES --> */}
-            <Languages languages={resume.languages} />
-            {/* <!-- SKILLS  --> */}
-            <Skills skills={resume.skills} />
-          </div>
-          <div className="resume__right">
-            {/* <!-- EXPERIENCE --> */}
-            <Work work={resume.work} />
+              {/* <!-- SOCIAL --> */}
+              <Profiles
+                education={resume.basics.profiles}
+                handleSectionClick={handleSectionClick}
+              />
+              {/* <!-- PROFILE --> */}
+              {resume.basics.summary && (
+                <section
+                  className="profile section"
+                  id="profile"
+                  onClick={handleBasicSectionClick}
+                >
+                  <h2 className="section-title">Profile</h2>
+                  <p
+                    className="profile_description"
+                    style={{ whiteSpace: "pre-wrap" }}
+                  >
+                    {resume.basics.summary}
+                  </p>
+                </section>
+              )}
 
-            {/* <!-- PROJECTS --> */}
-            <div className="html2pdf__page-break"></div>
-            <Projects projects={resume.projects} />
+              {/* <!-- EDUCATION --> */}
+              <Education
+                education={resume.education}
+                handleSectionClick={handleSectionClick}
+              />
+              {/* <!-- LANGUAGES --> */}
+              <Languages
+                languages={resume.languages}
+                handleSectionClick={handleSectionClick}
+              />
+              {/* <!-- SKILLS  --> */}
+              <Skills
+                skills={resume.skills}
+                handleSectionClick={handleSectionClick}
+              />
+            </div>
+            <div className="resume__right">
+              {/* <!-- EXPERIENCE --> */}
+              <Work
+                work={resume.work}
+                handleSectionClick={handleSectionClick}
+              />
 
-            {/* <!-- CERTIFICATES --> */}
-            <Certificates certificates={resume.certificates} />
-            {/* <!-- REFERENCES --> */}
-            <div className="html2pdf__page-break"></div>
-            <References references={resume.references} />
+              {/* <!-- PROJECTS --> */}
+              <Projects
+                projects={resume.projects}
+                handleSectionClick={handleSectionClick}
+              />
 
-            {/* <!-- INTERESTS --> */}
-            {/* <% if (resume.interests.length > 0) { %> */}
+              {/* <!-- CERTIFICATES --> */}
+              <Certificates
+                certificates={resume.certificates}
+                handleSectionClick={handleSectionClick}
+              />
+              {/* <!-- REFERENCES --> */}
+              <References
+                references={resume.references}
+                handleSectionClick={handleSectionClick}
+              />
 
-            {/* <section className="interests section">
+              {/* <!-- INTERESTS --> */}
+
+              {/* <section className="interests section">
               <h2 className="section-title">Interests</h2>
               <div className="interests_container bd-grid">
                 <div className="interests_content">
@@ -157,10 +865,10 @@ export default function Templates({ resume }) {
                 </div>
               </div>
             </section> */}
-            {/* <% } %> */}
+            </div>
           </div>
-        </div>
-      </main>
+        </main>
+      </div>
     </>
   );
 }

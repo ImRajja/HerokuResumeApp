@@ -1,0 +1,43 @@
+ {
+      id: "basic",
+      label: "Basic",
+      type: "container",
+      renderer: "form",
+      elements: {
+        name: {
+          name: "name",
+          label: "Name",
+          type: "field",
+          renderer: "text",
+          fieldType: "text",
+          validation: [["string"], ["required"], ["min", 3]],
+          onChange: changeTextOnChange,
+        },
+        label: {
+          name: "label",
+          label: "Label",
+          type: "field",
+          renderer: "text",
+          fieldType: "text",
+          validation: [["string"], ["required"], ["min", 3]],
+          onChange: changeTextOnChange,
+        },
+        summary: {
+          name: "summary",
+          label: "Summary",
+          type: "field",
+          renderer: "textarea",
+          fieldType: "textArea",
+          validation: [["string"], ["required"], ["min", 10]],
+          onChange: changeTextOnChange,
+        },
+        save: {
+          type: "field",
+          renderer: "button",
+          content: "Save",
+          fieldClass: "btn-success float-right",
+          buttonType: "submit",
+        },
+      },
+    }
+  

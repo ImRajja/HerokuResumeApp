@@ -5,7 +5,6 @@ import { GoogleLogin } from "react-google-login";
 import { useNavigate } from "react-router-dom";
 
 import useStyles from "./styles";
-import Input from "./Input";
 import Icon from "./icon";
 import { signIn, signUp } from "../../api/index";
 
@@ -16,15 +15,6 @@ const initialState = {
   password: "",
   confirmPassword: "",
 };
-
-// const GOOGLESEC = process.env.GOOGLESEC;
-const GOOGLESEC =
-  "123884862002-0llaren8gmh8h8pdf27tkbns3pdp4ou3.apps.googleusercontent.com";
-// "123884862002-7l28p32pt31v7rnv78vbsghlslihj0e2.apps.googleusercontent.com";
-// console.log(process.env.GOOGLESEC);
-// console.log("API_URL");
-// console.log(process.env.API_URL);
-// console.log(process.env);
 
 const Auth = () => {
   const classes = useStyles();
@@ -146,47 +136,13 @@ const Auth = () => {
               onFailure={googleFailure}
               cookiePolicy="single_host_origin"
             />
-          )} */}
-        </Grid>
-        {/* <Button
-          type="submit"
-          fullWidth
-          variant="contained"
-          color="primary"
-          className={classes.submit}
-        >
-          {isSignup ? "Sign up" : "Sign in"}
-        </Button> */}
-        <GoogleLogin
-          clientId={GOOGLESEC}
-          render={(renderProps) => (
-            <Button
-              className={classes.googleButton}
-              color="primary"
-              fullWidth
-              onClick={renderProps.onClick}
-              disabled={renderProps.disabled}
-              startIcon={<Icon />}
-              variant="contained"
-            >
-              Sign in with Google
-            </Button>
-          )}
-          onSuccess={googleSuccess}
-          onFailure={googleFailure}
-          cookiePolicy="single_host_origin"
-        />
-        {/* <Grid container justify="flex-end">
-          <Grid item>
-            <Button onClick={switchMode}>
-              {isSignup
-                ? "Already have an account? Sign In"
-                : "Don't have an account? Sign Up"}
-            </Button>
           </Grid>
-        </Grid> */}
-      </form>
-    </Container>
+        </Grid>
+      </Container>
+      <div className="homeImage">
+        <img src="./homeResume1.png" />
+      </div>
+    </>
   );
 };
 

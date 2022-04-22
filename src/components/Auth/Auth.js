@@ -112,7 +112,8 @@ const Auth = () => {
           <Grid item xs={3}> */}
             <GoogleLogin
               // clientId='320266898555-a52r99l7def1ropf21rk7ahuvt297hke.apps.googleusercontent.com'
-              clientId="123884862002-7l28p32pt31v7rnv78vbsghlslihj0e2.apps.googleusercontent.com"
+              // clientId="123884862002-7l28p32pt31v7rnv78vbsghlslihj0e2.apps.googleusercontent.com"
+              clientId="123884862002-qn4mhqh91hcfejkqtk2auk8jqtvnqgaf.apps.googleusercontent.com"
               render={(renderProps) => (
                 <Button
                   className={classes.googleButton}

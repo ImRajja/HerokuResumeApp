@@ -1,4 +1,5 @@
-import React, { useState, useEffect } from "react";
+// import React, { useState, useEffect } from "react";
+import React from "react";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { Paper, Container } from "@material-ui/core";
 
@@ -11,14 +12,14 @@ import useStyles from "./styles";
 function App() {
   const classes = useStyles();
 
-  const [user, setUser] = useState(JSON.parse(localStorage.getItem("profile")));
-  // const [noHeader, setNoHeader] = useState(false);
-  console.log("newUser inside App");
-  console.log(user);
+  const [user, setUser] = React.useState(
+    JSON.parse(localStorage.getItem("profile"))
+  );
 
   return (
     <BrowserRouter>
       <Header user={user} setUser={setUser} />
+
       {/* <Container className={classes.root} maxWidth="ld"> */}
       {/* <Container> */}
       {/* <Paper className={classes.paper}> */}
@@ -26,7 +27,8 @@ function App() {
         {user ? (
           <Route path="/" exact element={<Home user={user} />} />
         ) : (
-          <Route path="/" exact element={<NotSignedIn />} />
+          // <Route path="/" exact element={<NotSignedIn />} />
+          <Route path="/" exact element={<Auth />} />
         )}
         <Route path="/auth" exact element={<Auth />} />
       </Routes>

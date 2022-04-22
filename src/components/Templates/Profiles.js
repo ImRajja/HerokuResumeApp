@@ -4,7 +4,7 @@ import {
   IoLogoTwitter,
   IoChevronForwardSharp,
 } from "react-icons/io5";
-export default function Profiles({ education: profiles, handleSectionClick }) {
+export default function Profiles({ profiles, handleSectionClick }) {
   function handleClick(iKey) {
     console.log(`${iKey} clicked`);
     handleSectionClick("profiles", iKey);

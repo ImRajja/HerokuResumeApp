@@ -1,5 +1,4 @@
 import React from "react";
-// import ImageDataURI from "image-data-uri";
 import "./resume.css";
 import Projects from "./Projects";
 import Education from "./Education";
@@ -18,8 +17,16 @@ import imageToBase64 from "image-to-base64/browser";
 import { Button } from "@material-ui/core";
 import { useState, useEffect } from "react";
 import Profiles from "./Profiles";
+import { Upload } from "../Upload/Upload";
 
-export default function Templates({ resumeIn, editItem, user, removeItem }) {
+export default function Templates({
+  resumeIn,
+  editItem,
+  user,
+  removeItem,
+  addItem,
+  setItem,
+}) {
   const changeTextOnChange = (formikProps, fieldConfig, event) => {
     console.log("event.target.value");
     console.log(event.target.value);
@@ -40,10 +47,6 @@ export default function Templates({ resumeIn, editItem, user, removeItem }) {
         }
       });
     } else {
-      console.log("fieldConfig.name");
-      console.log(fieldConfig.name);
-      console.log("event.target.value");
-      console.log(event.target.value);
       if (fieldConfig.name === "location.address") {
         tempData["location"]["address"] = event.target.value;
       } else {
@@ -51,48 +54,22 @@ export default function Templates({ resumeIn, editItem, user, removeItem }) {
       }
 
       if (fieldConfig.name === "imageUrl") {
-        console.log("event.target.value != resume.basics.imageUrl");
-        console.log(event.target.value);
-        console.log(resumeIn.basics.imageUrl);
-        // if (event.target.value != resumeIn.basics.imageUrl) {
-        // imageToBase64(event.target.value) // Path to the image
-        console.log(
-          "-----------------------------------///------------------------------------------"
-        );
-        imageToBase64(
-          event.target.value
-          // "https://media-exp1.licdn.com/dms/image/C5603AQH80bNVureXzg/profile-displayphoto-shrink_400_400/0/1639053867442?e=1655942400&v=beta&t=Z7O5OSJu2I3hMGC-_jJCQpGqVOkqoYhS6av6PA9xy3k"
-        ) // Path to the image
+        imageToBase64(event.target.value)
           .then((response) => {
             console.log("got response...");
             tempData.image = `data:image/png;base64,${response}`;
-            // setResume((prev) => {
-            //   const outValue = { ...prev };
-            //   outValue[customType] = tempData;
-            //   return outValue;
-            // });
           })
           .catch((error) => {
-            console.log(error); // Logs an error if there was one
+            console.log(error);
           });
         // }
       }
     }
 
-    console.log("tempData-----------============");
-    console.log(tempData);
-    console.log("schemaObject++++++");
-    console.log(schemaObject);
-
-    // formikProps.values;
-    // formikProps.values.uid;
-
     setResume((prev) => {
       const outValue = { ...prev };
       outValue[customType] = tempData;
       return outValue;
-
-      // return { ...prev, ({customType : tempData})  }
     });
   };
 
@@ -673,6 +650,9 @@ export default function Templates({ resumeIn, editItem, user, removeItem }) {
 
   function handleDeleteBtnClick() {
     removeItem(resume._id, user);
+    setResume(null);
+    // <Redirect to="/login" />;
+    // <Upload />;
   }
 
   const [schemaObject, setSchemaObject] = useState({
@@ -719,132 +699,150 @@ export default function Templates({ resumeIn, editItem, user, removeItem }) {
 
     handleSectionClick("basics");
   }
+
   return (
     <>
-      <div style={{ display: "flex" }}>
-        <div style={{ width: "420px" }}>
-          <Button
-            color="error"
-            variant="contained"
-            onClick={handleDeleteBtnClick}
-          >
-            Delete Resume
-          </Button>
-          <DynamicForm schemaObject={schemaObject} />
-        </div>
-        <main className="l-main bd-container">
-          {/* <!-- All elements within this div, is generated in PDF --> */}
-          <div className="resume" id="area-cv">
-            <div className="resume__left">
-              {/* <!-- HOME --> */}
-              <section
-                className="home"
-                id="home"
-                onClick={handleBasicSectionClick}
-              >
-                <div className="home_containter section bd-grid">
-                  <div className="home_data bd-grid">
-                    {resume.basics.image && (
-                      <img
-                        src={resume.basics.image}
-                        alt=""
-                        className="home_img center"
-                      />
-                    )}
-                    <h1 className="home_title">{resume.basics.name}</h1>
-                    <h3 className="home_profession">{resume.basics.label}</h3>
-                  </div>
-                  <div className="home_address bd-grid">
-                    {resume.basics.location.address && (
-                      <span className="home_information">
-                        <IoLocationOutline />
-                        <i className="bx bx-map"> &nbsp; </i>
-                        {resume.basics.location.address}
-                      </span>
-                    )}
-                    {resume.basics.email && (
-                      <span className="home_information">
-                        <IoMailOutline />
-                        <i className="bx bx-envelope"> &nbsp; </i>
-                        {resume.basics.email}
-                      </span>
-                    )}
-                    {resume.basics.phone && (
-                      <span className="home_information">
-                        <IoPhonePortraitOutline />
-                        <i className="bx bx-phone"> &nbsp; </i>
-                        {resume.basics.phone}
-                      </span>
-                    )}
-                  </div>
-                </div>
-              </section>
-
-              {/* <!-- SOCIAL --> */}
-              <Profiles
-                education={resume.basics.profiles}
-                handleSectionClick={handleSectionClick}
-              />
-              {/* <!-- PROFILE --> */}
-              {resume.basics.summary && (
+      {resume ? (
+        <div style={{ display: "flex" }}>
+          <div style={{ width: "420px" }}>
+            <Button
+              color="error"
+              variant="contained"
+              onClick={handleDeleteBtnClick}
+            >
+              Delete Resume
+            </Button>
+            <DynamicForm schemaObject={schemaObject} />
+          </div>
+          <main className="l-main bd-container">
+            {/* <!-- All elements within this div, is generated in PDF --> */}
+            <div className="resume" id="area-cv">
+              <div className="resume__left">
+                {/* <!-- HOME --> */}
                 <section
-                  className="profile section"
-                  id="profile"
+                  className="home"
+                  id="home"
                   onClick={handleBasicSectionClick}
                 >
-                  <h2 className="section-title">Profile</h2>
-                  <p
-                    className="profile_description"
-                    style={{ whiteSpace: "pre-wrap" }}
-                  >
-                    {resume.basics.summary}
-                  </p>
+                  <div className="home_containter section bd-grid">
+                    <div className="home_data bd-grid">
+                      {resume.basics.image && (
+                        <img
+                          src={resume.basics.image}
+                          alt=""
+                          className="home_img center"
+                        />
+                      )}
+                      <h1 className="home_title">{resume.basics.name}</h1>
+                      <h3 className="home_profession">{resume.basics.label}</h3>
+                    </div>
+                    <div className="home_address bd-grid">
+                      {resume.basics.location.address && (
+                        <span className="home_information">
+                          <IoLocationOutline />
+                          <i className="bx bx-map"> &nbsp; </i>
+                          {resume.basics.location.address}
+                        </span>
+                      )}
+                      {resume.basics.email && (
+                        <span className="home_information">
+                          <IoMailOutline />
+                          <i className="bx bx-envelope"> &nbsp; </i>
+                          {resume.basics.email}
+                        </span>
+                      )}
+                      {resume.basics.phone && (
+                        <span className="home_information">
+                          <IoPhonePortraitOutline />
+                          <i className="bx bx-phone"> &nbsp; </i>
+                          {resume.basics.phone}
+                        </span>
+                      )}
+                    </div>
+                  </div>
                 </section>
-              )}
 
-              {/* <!-- EDUCATION --> */}
-              <Education
-                education={resume.education}
-                handleSectionClick={handleSectionClick}
-              />
-              {/* <!-- LANGUAGES --> */}
-              <Languages
-                languages={resume.languages}
-                handleSectionClick={handleSectionClick}
-              />
-              {/* <!-- SKILLS  --> */}
-              <Skills
-                skills={resume.skills}
-                handleSectionClick={handleSectionClick}
-              />
-            </div>
-            <div className="resume__right">
-              {/* <!-- EXPERIENCE --> */}
-              <Work
-                work={resume.work}
-                handleSectionClick={handleSectionClick}
-              />
+                {/* <!-- SOCIAL --> */}
+                {resume.basics.profiles && (
+                  <Profiles
+                    profiles={resume.basics.profiles}
+                    handleSectionClick={handleSectionClick}
+                  />
+                )}
+                {/* <!-- PROFILE --> */}
+                {resume.basics.summary && (
+                  <section
+                    className="profile section"
+                    id="profile"
+                    onClick={handleBasicSectionClick}
+                  >
+                    <h2 className="section-title">Profile</h2>
+                    <p
+                      className="profile_description"
+                      style={{ whiteSpace: "pre-wrap" }}
+                    >
+                      {resume.basics.summary}
+                    </p>
+                  </section>
+                )}
 
-              {/* <!-- PROJECTS --> */}
-              <Projects
-                projects={resume.projects}
-                handleSectionClick={handleSectionClick}
-              />
+                {/* <!-- EDUCATION --> */}
+                {resume.education && (
+                  <Education
+                    education={resume.education}
+                    handleSectionClick={handleSectionClick}
+                  />
+                )}
+                {/* <!-- LANGUAGES --> */}
+                {resume.languages && (
+                  <Languages
+                    languages={resume.languages}
+                    handleSectionClick={handleSectionClick}
+                  />
+                )}
+                {/* <!-- SKILLS  --> */}
+                {resume.skills && (
+                  <Skills
+                    skills={resume.skills}
+                    handleSectionClick={handleSectionClick}
+                  />
+                )}
+              </div>
+              <div className="resume__right">
+                {/* <!-- EXPERIENCE --> */}
+                {resume.work && (
+                  <Work
+                    work={resume.work}
+                    handleSectionClick={handleSectionClick}
+                  />
+                )}
 
-              {/* <!-- CERTIFICATES --> */}
-              <Certificates
-                certificates={resume.certificates}
-                handleSectionClick={handleSectionClick}
-              />
-              {/* <!-- REFERENCES --> */}
-              <References
-                references={resume.references}
-                handleSectionClick={handleSectionClick}
-              />
+                {/* <!-- PROJECTS --> */}
+                {resume.projects && (
+                  <Projects
+                    projects={resume.projects}
+                    handleSectionClick={handleSectionClick}
+                  />
+                )}
 
-              {/* <!-- INTERESTS --> */}
+                {/* <!-- CERTIFICATES --> */}
+                {resume.certificates && (
+                  <Certificates
+                    certificates={resume.certificates}
+                    handleSectionClick={handleSectionClick}
+                  />
+                )}
+                {/* <!-- REFERENCES --> */}
+                {resume.references && (
+                  <References
+                    references={resume.references}
+                    handleSectionClick={handleSectionClick}
+                  />
+                )}
 
-              {/* <section className="interests section">
+                {/* <!-- INTERESTS --> */}
+
+                {/* <section className="interests section">
               <h2 className="section-title">Interests</h2>
               <div className="interests_container bd-grid">
                 <div className="interests_content">
@@ -865,10 +863,13 @@ export default function Templates({ resumeIn, editItem, user, removeItem }) {
                 </div>
               </div>
             </section> */}
+              </div>
             </div>
-          </div>
-        </main>
-      </div>
+          </main>
+        </div>
+      ) : (
+        <Upload addItem={addItem} user={user} setItem={setItem} />
+      )}
     </>
   );
 }

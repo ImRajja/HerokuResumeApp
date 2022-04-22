@@ -97,11 +97,6 @@ const Auth = () => {
         spacing={2}
       >
         <Grid container spacing={2} justify="flex-start">
-          {/* <Grid xs={8}> */}
-          {/* <div className="homeImage">
-            <img src="./homeResume1.png" />
-          </div> */}
-          {/* </Grid> */}
           <Grid item sm={6}></Grid>
           <Grid
             container
@@ -110,7 +105,7 @@ const Auth = () => {
             alignItems="center"
             direction="column"
           >
-            <Typography variant="h1" align={"center"} m-b={5}>
+            <Typography variant="h1" align={"center"}>
               Make beautiful resumes in few clicks
             </Typography>
             {/* </Grid>

@@ -1,6 +1,7 @@
 import axios from "axios";
 // const API_URL = process.env.API_URL;
-const API_URL = "https://herokuapi0422.herokuapp.com";
+const API_URL = "https://api2022.vercel.app";
+// const API_URL = "https://herokuapi0422.herokuapp.com";
 // const COLLECTION = process.env.COLLECTION;
 
 // var email = "none@none.com";
